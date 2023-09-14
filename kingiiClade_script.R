@@ -36,15 +36,15 @@ kingii1 <- '#8dd3c7'
 kingii2 <- '#fb8072'
 deseado <- '#80b1d3'
 
-# import MCMC file
-mcmcfile <- read.table("bpp/A00_MSC_gdi/colaps4_mcmc.txt", header = TRUE)
+# Generate GDI
 
+# full
+
+# import MCMC file
+mcmcfile <- read.table("bpp/A00_MSC_gdi/100loci_mcmc.txt", header = TRUE)
 # check stationarity lnL
 plot(mcmcfile$Gen[seq(1, nrow(mcmcfile), 50)], mcmcfile$lnL[seq(1, nrow(mcmcfile), 50)], type = "l", xlab = "Generation", ylab = "lnL")
 
-# generate GDI
-
-# full
 dens_tari <- density(1 - exp(-2*mcmcfile$tau_16/mcmcfile$theta_10))
 dens_escarch <- density(1 - exp(-2*mcmcfile$tau_16/mcmcfile$theta_4))
 dens_arch <- density(1 - exp(-2*mcmcfile$tau_19/mcmcfile$theta_1))
@@ -53,6 +53,12 @@ dens_kiSS <- density(1 - exp(-2*mcmcfile$tau_21/mcmcfile$theta_7))
 dens_ki2 <- density(1 - exp(-2*mcmcfile$tau_21/mcmcfile$theta_6))
 
 # colaps1
+
+# import MCMC file
+mcmcfile <- read.table("bpp/A00_MSC_gdi/colaps1_mcmc.txt", header = TRUE)
+# check stationarity lnL
+plot(mcmcfile$Gen[seq(1, nrow(mcmcfile), 50)], mcmcfile$lnL[seq(1, nrow(mcmcfile), 50)], type = "l", xlab = "Generation", ylab = "lnL")
+
 dens_baguali <- density(1 - exp(-2*mcmcfile$tau_12bagualiescarch_tari/mcmcfile$theta_2baguali))
 dens_escarch_tari <- density(1 - exp(-2*mcmcfile$tau_12bagualiescarch_tari/mcmcfile$theta_4escarch_tari))
 dens_tristis <- density(1 - exp(-2*mcmcfile$tau_14tristisarcheforus_sz/mcmcfile$theta_8tristis))
@@ -61,17 +67,36 @@ dens_deseado <- density(1 - exp(-2*mcmcfile$tau_15deseadokingii/mcmcfile$theta_3
 dens_kingii <- density(1 - exp(-2*mcmcfile$tau_15deseadokingii/mcmcfile$theta_5kingii))
 
 # colaps2
+
+# import MCMC file
+mcmcfile <- read.table("bpp/A00_MSC_gdi/colaps2_mcmc.txt", header = TRUE)
+# check stationarity lnL
+plot(mcmcfile$Gen[seq(1, nrow(mcmcfile), 50)], mcmcfile$lnL[seq(1, nrow(mcmcfile), 50)], type = "l", xlab = "Generation", ylab = "lnL")
+
 dens_west <- density(1 - exp(-2*mcmcfile$tau_9westkingii_deseado/mcmcfile$theta_5west))
 dens_kingii_deseado <- density(1 - exp(-2*mcmcfile$tau_9westkingii_deseado/mcmcfile$theta_1kingii_deseado))
 
 # colaps3
+
+# import MCMC file
+mcmcfile <- read.table("bpp/A00_MSC_gdi/colaps3_mcmc.txt", header = TRUE)
+# check stationarity lnL
+plot(mcmcfile$Gen[seq(1, nrow(mcmcfile), 50)], mcmcfile$lnL[seq(1, nrow(mcmcfile), 50)], type = "l", xlab = "Generation", ylab = "lnL")
+
 dens_south <- density(1 - exp(-2*mcmcfile$tau_7southkingii_deseado_west/mcmcfile$theta_3south))
 dens_kingii_deseado_west <- density(1 - exp(-2*mcmcfile$tau_7southkingii_deseado_west/mcmcfile$theta_4kingii_deseado_west))
 
 # colaps4
+
+# import MCMC file
+mcmcfile <- read.table("bpp/A00_MSC_gdi/colaps4_mcmc.txt", header = TRUE)
+# check stationarity lnL
+plot(mcmcfile$Gen[seq(1, nrow(mcmcfile), 50)], mcmcfile$lnL[seq(1, nrow(mcmcfile), 50)], type = "l", xlab = "Generation", ylab = "lnL")
+
 dens_kingii1 <- density(1 - exp(-2*mcmcfile$tau_5kingii1colaps/mcmcfile$theta_2kingii1))
 dens_colaps <- density(1 - exp(-2*mcmcfile$tau_5kingii1colaps/mcmcfile$theta_3colaps))
 
+# Plots
 
 # full
 plot((dens_ki2), xlim = c(0, 1), col = kingii2, lwd = 4, xlab = "gdi", main = NA, cex.lab = 1.2, yaxt = "n", xaxt = 'n')
@@ -141,7 +166,7 @@ legend("topright", 10, legend = c("kingii 1",
 
 # 
 # # plot mean, median and mode of gdi for A
-# # I did not used this, but is useful
+# # I did not use this, but is useful
 # n <- length(densityA$y)         
 # dx <- mean(diff(densityA$x))    
 # y.unit <- sum(densityA$y) * dx  
@@ -168,12 +193,12 @@ legend("topright", 10, legend = c("kingii 1",
 
 
 
-# PPC distributions ----
+# Posterior Predictive distributions of summary statistics of MSC parameters ----
 # compare empirical distributions of MSC parameters with their posterior predictive distributions
 library(e1071)
 
 # load empirical mcmc file from bpp
-mcmc_emp <- read.table('mcmc.txt', header = TRUE)
+mcmc_emp <- read.table('bpp/postPredSim_MSC/mcmc.txt', header = TRUE)
 params <- colnames(mcmc_emp)
 
 # set the number of simulations and the number of samples of each simulation
@@ -260,7 +285,7 @@ abline(v = mean(mcmc_emp$theta_8tristis), col = "red", lwd = 3, lty = 2)
 # here I use the SNPs2CF() function
 
 # source the function
-source("/media/kevin/KEVIN_HDD/academico/scripts_paquetes/filogenia/SNPs2CF/functions.R");
+source("/path/to/SNPs2CF/functions.R");
 
 # Opcional: Convert phased VCF to phy
 library(pegas)
