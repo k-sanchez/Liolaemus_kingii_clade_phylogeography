@@ -13,7 +13,7 @@ Pkg.add("JLD") # save Julia session
 using Pkg, PhyloNetworks, QuartetNetworkGoodnessFit, PhyloPlots, CSV, DataFrames, JLD, Distributed, Gadfly, RCall; # start a session
 Pkg.status("QuartetNetworkGoodnessFit") # check version
 
-cd("phylonetworks") # use double quotes!
+cd("PhyloNetworks") # use double quotes!
 pwd()
 
 # Add processors
@@ -179,7 +179,7 @@ R"dev.off()";
 ## Observed vs expected CFs
 
 using Statistics
-cd("/media/kevin/KEVIN_HDD/academico/papers_caps/kingiiClade_SDL/analyzes/REVIEW/phylonetworks/goodness_fit/")
+cd("PhyloNetworks/goodness_fit/")
 
 topologyMaxQPseudolik!(net3, SNPs2CF); # do this for all networks
 df_wide = fittedQuartetCF(SNPs2CF)

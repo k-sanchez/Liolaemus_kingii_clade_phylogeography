@@ -41,7 +41,7 @@ deseado <- '#80b1d3'
 # full
 
 # import MCMC file
-mcmcfile <- read.table("bpp/A00_MSC_gdi/100loci_mcmc.txt", header = TRUE)
+mcmcfile <- read.table("data/bpp/A00_MSC_gdi/100loci_mcmc.txt", header = TRUE)
 # check stationarity lnL
 plot(mcmcfile$Gen[seq(1, nrow(mcmcfile), 50)], mcmcfile$lnL[seq(1, nrow(mcmcfile), 50)], type = "l", xlab = "Generation", ylab = "lnL")
 
@@ -55,7 +55,7 @@ dens_ki2 <- density(1 - exp(-2*mcmcfile$tau_21/mcmcfile$theta_6))
 # colaps1
 
 # import MCMC file
-mcmcfile <- read.table("bpp/A00_MSC_gdi/colaps1_mcmc.txt", header = TRUE)
+mcmcfile <- read.table("data/bpp/A00_MSC_gdi/colaps1_mcmc.txt", header = TRUE)
 # check stationarity lnL
 plot(mcmcfile$Gen[seq(1, nrow(mcmcfile), 50)], mcmcfile$lnL[seq(1, nrow(mcmcfile), 50)], type = "l", xlab = "Generation", ylab = "lnL")
 
@@ -69,7 +69,7 @@ dens_kingii <- density(1 - exp(-2*mcmcfile$tau_15deseadokingii/mcmcfile$theta_5k
 # colaps2
 
 # import MCMC file
-mcmcfile <- read.table("bpp/A00_MSC_gdi/colaps2_mcmc.txt", header = TRUE)
+mcmcfile <- read.table("data/bpp/A00_MSC_gdi/colaps2_mcmc.txt", header = TRUE)
 # check stationarity lnL
 plot(mcmcfile$Gen[seq(1, nrow(mcmcfile), 50)], mcmcfile$lnL[seq(1, nrow(mcmcfile), 50)], type = "l", xlab = "Generation", ylab = "lnL")
 
@@ -79,7 +79,7 @@ dens_kingii_deseado <- density(1 - exp(-2*mcmcfile$tau_9westkingii_deseado/mcmcf
 # colaps3
 
 # import MCMC file
-mcmcfile <- read.table("bpp/A00_MSC_gdi/colaps3_mcmc.txt", header = TRUE)
+mcmcfile <- read.table("data/bpp/A00_MSC_gdi/colaps3_mcmc.txt", header = TRUE)
 # check stationarity lnL
 plot(mcmcfile$Gen[seq(1, nrow(mcmcfile), 50)], mcmcfile$lnL[seq(1, nrow(mcmcfile), 50)], type = "l", xlab = "Generation", ylab = "lnL")
 
@@ -89,7 +89,7 @@ dens_kingii_deseado_west <- density(1 - exp(-2*mcmcfile$tau_7southkingii_deseado
 # colaps4
 
 # import MCMC file
-mcmcfile <- read.table("bpp/A00_MSC_gdi/colaps4_mcmc.txt", header = TRUE)
+mcmcfile <- read.table("data/bpp/A00_MSC_gdi/colaps4_mcmc.txt", header = TRUE)
 # check stationarity lnL
 plot(mcmcfile$Gen[seq(1, nrow(mcmcfile), 50)], mcmcfile$lnL[seq(1, nrow(mcmcfile), 50)], type = "l", xlab = "Generation", ylab = "lnL")
 
@@ -198,7 +198,7 @@ legend("topright", 10, legend = c("kingii 1",
 library(e1071)
 
 # load empirical mcmc file from bpp
-mcmc_emp <- read.table('bpp/postPredSim_MSC/mcmc.txt', header = TRUE)
+mcmc_emp <- read.table('data/bpp/postPredSim_MSC/mcmc.txt', header = TRUE)
 params <- colnames(mcmc_emp)
 
 # set the number of simulations and the number of samples of each simulation
@@ -207,7 +207,8 @@ nsam = 10000
 
 # load posterior predictive simulations (mcmc files) as a list of dataframes
 # here I omit the first file, it was loaded above
-mcmc_pp_files <- list.files(pattern = "*sub.txt", recursive = TRUE)[-1]
+setwd("data/bpp/simulated_datasets/")
+mcmc_pp_files <- list.files(pattern = "mcmc.txt", recursive = TRUE)[-1]
 mcmc_pp <- lapply(mcmc_pp_files, read.table, header = TRUE)
 
 # this is the first simulation
@@ -289,17 +290,17 @@ source("/path/to/SNPs2CF/functions.R");
 
 # Opcional: Convert phased VCF to phy
 library(pegas)
-inputVCF <- "/media/kevin/KEVIN_HDD/academico/papers_caps/kingiiClade_SDL/data/RADseq/matrices_review/clust90min37_46_subset/clust90_min37_46_subset_outfiles/clust90_min37_46_subset.usnps.vcf"
+inputVCF <- "PhyloNetworks/clust90_min37_46_subset.usnps.vcf"
 vcf <- read.vcf(inputVCF); vcf
 vcf2phylip(vcf.name = inputVCF, total.SNPs = 1755, output.name = 'test.phy');
 
-inputPHY <- "clust90_min37_46_subset_unphased.usnps.phy" # PUT THE .phy MATRIX IN YOUR WORKING DIRECTORY
+inputPHY <- "PhyloNetworks/clust90_min37_46_subset_unphased.usnps.phy" # PUT THE .phy MATRIX IN YOUR WORKING DIRECTORY
 
 # Generate CF table
 # for Network estimation: n.quartets = 100, bootstrap = TRUE
 # for goodness of fit tests: n.quartets = 1, bootstrap = FALSE
 output <- SNPs2CF(seqMatrix = inputPHY,
-                  ImapName = "imapfile.txt",
+                  ImapName = "data/RADseq/imapfile.txt",
                   between.sp.only = TRUE,
                   max.SNPs = NULL,
                   bootstrap = FALSE,
@@ -335,8 +336,8 @@ ggplot(data, aes(x, y, group = 1)) +
 # Time calibration of MSC and MSCi models ----
 
 library(bppr)
-mcmc_msc <- read.table('bpp/A00_MSC_gdi/colaps1_mcmc.txt', header = TRUE)
-mcmc_msci <- read.table('bpp/A00_MSCi/mcmc.txt', header = TRUE)
+mcmc_msc <- read.table('data/bpp/A00_MSC_gdi/colaps1_mcmc.txt', header = TRUE)
+mcmc_msci <- read.table('data/bpp/A00_MSCi/mcmc.txt.processed', header = TRUE)
 
 # calibrate using a prior on molecular substitution rate:
 # this converts tau into absolute divergence times and theta into effective population sizes (N)
@@ -361,8 +362,8 @@ summary_msci <- data.frame(parameter = rownames(means_msci),
                           lower95HPD = postHPD_msci$lower,
                           mean = means_msci[, 1],
                           upper95HPD = postHPD_msci$upper)
-write.table(summary_msc, 'bpp/calibration/summary_msc.csv', quote = FALSE, sep = ',', row.names = FALSE)
-write.table(summary_msci, 'bpp/calibration/summary_msci.csv', quote = FALSE, sep = ',', row.names = FALSE)
+write.table(summary_msc, 'calibration/summary_msc.csv', quote = FALSE, sep = ',', row.names = FALSE)
+write.table(summary_msci, 'calibration/summary_msci.csv', quote = FALSE, sep = ',', row.names = FALSE)
 
 
 
@@ -411,7 +412,7 @@ plot.sim.obs <- function(sim, obs)
 }
 
 # use this convert split a .alleles file from ipyrad into separate fastas
-# iPyrad.alleles.loci2fasta('/media/kevin/KEVIN_HDD/academico/papers_caps/kingiiClade_SDL/data/RADseq/matrices_review/clust90min15_19_west/clust90min15_19_west_outfiles/clust90min15_19_west.alleles', '/media/kevin/KEVIN_HDD/academico/papers_caps/kingiiClade_SDL/data/RADseq/matrices_review/clust90min15_19_west/clust90min15_19_west_outfiles/fastas/')
+# iPyrad.alleles.loci2fasta('data/RADseq/clust90min15_19_west.alleles', 'data/fastas/')
 
 # Notes:
 #   Time is measured in generations -> bppr: years/gen_time
@@ -428,8 +429,7 @@ plot.sim.obs <- function(sim, obs)
 #### kingii vs. Deseado ####
 # 1: kingii (sensu stricto + kingii2), 2: "Deseado" clade
 
-setwd('kingii_deseado')
-fastas <- 'fastas/directory/'
+fastas <- 'PipeMaster/kingii_deseado/fastas/'
 length(list.files(fastas, pattern = '*.fas'))
 # 1879 loci
 
@@ -449,7 +449,7 @@ plot.priors(IMsc_kingii_des, nsamples = 1000)
 
 # Replicate empirical data structure
 
-popmap_kingii_des <- read.table("popmap.txt", header = TRUE, sep = ',') # assignments
+popmap_kingii_des <- read.table("PipeMaster/kingii_deseado/popmap.txt", header = TRUE, sep = ',') # assignments
 
 Is_kingii_des <- get.data.structure(model = Is_kingii_des, path.to.fasta = fastas, pop.assign = popmap_kingii_des, sanger = FALSE)
 IM_kingii_des <- get.data.structure(model = IM_kingii_des, path.to.fasta = fastas, pop.assign = popmap_kingii_des, sanger = FALSE)
@@ -619,8 +619,7 @@ write.table(summary(cv), "cv_error.txt")
 #### Southern clade ####
 # 1: baguali, 2: escarchadosi_tari
 
-setwd('south/')
-fastas <- 'fastas/directory/'
+fastas <- 'PipeMaster/south/fastas/'
 length(list.files(fastas, pattern = '*.fas'))
 # 2107 loci (I removed one locus for not having variable sites)
 
@@ -642,7 +641,7 @@ plot.priors(IMsc_south, nsamples = 1000)
 
 # Replicate empirical data structure
 
-popmap_south <- read.table("popmap.txt", header = TRUE, sep = ',') # assignments
+popmap_south <- read.table("PipeMaster/south/popmap.txt", header = TRUE, sep = ',') # assignments
 
 Is_south <- get.data.structure(model = Is_south, path.to.fasta = fastas, pop.assign = popmap_south, sanger = FALSE)
 IM_south <- get.data.structure(model = IM_south, path.to.fasta = fastas, pop.assign = popmap_south, sanger = FALSE)
@@ -799,8 +798,7 @@ write.table(summary(cv), "cv_error.txt")
 #### Western clade ####
 # 1: archeforus_sz, 2: tristis
 
-setwd('west/')
-fastas <- 'directory/fastas'
+fastas <- 'PipeMaster/west/fastas'
 length(list.files(fastas, pattern = '*.fas'))
 # 2522 loci
 
@@ -820,7 +818,7 @@ plot.priors(IMsc_west, nsamples = 1000)
 
 # Replicate empirical data structure
 
-popmap_west <- read.table("popmap.txt", header = TRUE, sep = ',') # assignments
+popmap_west <- read.table("PipeMaster/west/popmap.txt", header = TRUE, sep = ',') # assignments
 
 Is_west <- get.data.structure(model = Is_west, path.to.fasta = fastas, pop.assign = popmap_west, sanger = FALSE)
 IM_west <- get.data.structure(model = IM_west, path.to.fasta = fastas, pop.assign = popmap_west, sanger = FALSE)
